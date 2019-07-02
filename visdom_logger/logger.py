@@ -44,9 +44,8 @@ class VisdomLogger:
     def hist(self, name, x, number_of_bins, title=""):
         data = self.windows[name]
 
-        update = None if data.window is None else 'append'
         
-        win = self.vis.histogram(X=x, update=update, opts={'legend' :[name], 'title':title, 'numbins':20})
+        win = self.vis.histogram(X=x, opts={'legend' :[name], 'title':title, 'numbins':20})
         
         data.window = win
         data.type = ChartTypes.hist
