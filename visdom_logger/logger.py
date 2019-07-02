@@ -8,7 +8,8 @@ from enum import Enum
 class ChartTypes(Enum):
     scalar = 1,
     scalars = 2,
-    image = 3
+    image = 3,
+    hist = 4
 
 
 class ChartData:
@@ -39,6 +40,16 @@ class VisdomLogger:
         # Update the window
         data.window = win
         data.type = ChartTypes.scalar
+
+    def hist(self, name, x, number_of_bins, title=""):
+        data = self.windows[name]
+
+        update = None if data.window is None else 'append'
+        
+        win = self.vis.histogram(X=x, update=update, opts={'legend' :[name], 'title':title, 'numbins':20})
+        
+        data.window = win
+        data.type = ChartTypes.hist
 
     def scalars(self, list_of_names, x, list_of_ys, title=""):
         name = '$'.join(list_of_names)
